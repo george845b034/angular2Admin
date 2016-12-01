@@ -16,6 +16,10 @@ import {AuthGuardService} from "./service/auth-guard.service";
 import {AuthService} from "./service/auth.service";
 import { Dashboard2Component } from './pages/dashboard2/dashboard2.component';
 import {ToolsService} from "./service/tools.service";
+import { PostsComponent } from './pages/posts/posts.component';
+import {PostsService} from "./service/posts.service";
+import {ToastyModule} from "ng2-toasty";
+import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
 
 @NgModule({
     declarations: [
@@ -27,16 +31,19 @@ import {ToolsService} from "./service/tools.service";
         LoginComponent,
         FooterComponent,
         PagesComponent,
-        Dashboard2Component
+        Dashboard2Component,
+        PostsComponent
     ],
     imports: [
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
-        routing
+        routing,
+        ToastyModule.forRoot(),
+        Ng2Bs3ModalModule
     ],
-    providers: [appRoutingProviders, AuthGuardService, AuthService, ToolsService],
+    providers: [appRoutingProviders, AuthGuardService, AuthService, ToolsService, PostsService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

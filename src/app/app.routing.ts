@@ -8,6 +8,7 @@ import {PagesComponent} from "./pages/pages.component";
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {AuthGuardService} from "./service/auth-guard.service";
 import {Dashboard2Component} from "./pages/dashboard2/dashboard2.component";
+import {PostsComponent} from "./pages/posts/posts.component";
 
 
 const appRoutes: Routes = [
@@ -15,11 +16,12 @@ const appRoutes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'pages', component: PagesComponent,
         // canLoad: [AuthGuardService],
-        canActivate: [AuthGuardService],
+        // canActivate: [AuthGuardService],
         children: [
         {path: '', redirectTo: 'dashboard', pathMatch: 'full' },
         {path: 'dashboard', component: DashboardComponent},
-        {path: 'dashboard2', component: Dashboard2Component}
+        {path: 'dashboard2', component: Dashboard2Component},
+        {path: 'posts', component: PostsComponent}
     ]},
     {path: '**', redirectTo: 'pages'},
 ];

@@ -12,7 +12,9 @@ declare var $:any;
 export class LoginComponent implements OnInit {
 
     loginForm: FormGroup;
+    registerForm: FormGroup;
     isError = false;
+    errorMessage = "";
 
     constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {
     }
@@ -25,16 +27,42 @@ export class LoginComponent implements OnInit {
             account: ['', [Validators.required]],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
+
+
+        this.registerForm = this.formBuilder.group({
+            account: ['', [Validators.required, Validators.minLength(6)]],
+            password: ['', [Validators.required, Validators.minLength(6)]]
+        });
     }
 
-    public onLogin() {
-        console.log(this.loginForm.value);
+    onLogin() {
         this.authService.login(this.loginForm.value.account, this.loginForm.value.password).subscribe(( resData )=>{
-            console.log(resData);
-        //
-        //     let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/dashboard' ;
-        //
-        //     this.router.navigate([redirect]);
+
+            if (resData["returnMsgNo"] == "1" ){
+                this.authService.isLoggedIn = true;
+                this.router.navigate(["/dashboard"]);
+            }else{
+                this.isError = true;
+                this.errorMessage = resData["returnMsg"];
+            }
         });
+    }
+
+    onRegister() {
+        this.authService.register(this.registerForm.value.account, this.registerForm.value.password).subscribe(( resData )=>{
+
+            if (resData["returnMsgNo"] == "1" ){
+                $('#register').css('animation-name', 'fadeOutLeft');
+                $('.login_form').css({'animation-name': 'fadeInLeft', 'animation-delay':'.1s'});
+                this.router.navigate(["/login"], {fragment: 'signin'});
+            }else{
+                this.isError = true;
+                this.errorMessage = resData["returnMsg"];
+            }
+        });
+    }
+
+    onChangeLogin() {
+        this.isError = false;
     }
 }
